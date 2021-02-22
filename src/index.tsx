@@ -16,6 +16,38 @@ export const App = () => {
       <div>
         <button
           onClick={() => {
+            firebase
+              .auth()
+              .currentUser.getIdToken(/* forceRefresh */ true)
+              .then(function (idToken) {
+                // Send token to your backend via HTTPS
+                // ...
+                const headers = new Headers();
+                headers.append("Content-Type", "application/json");
+
+                const body = {
+                  idToken: idToken,
+                  mock_data: "true"
+                };
+
+                const options = {
+                  method: "POST",
+                  headers,
+                  mode: "cors",
+                  body: JSON.stringify(body)
+                };
+
+                fetch("https://enflfmwrj9809wm.m.pipedream.net", options);
+              })
+              .catch(function (error) {
+                // Handle error
+              });
+          }}
+        >
+          Trigger Pipedream 23
+        </button>
+        <button
+          onClick={() => {
             const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(googleAuthProvider);
           }}
